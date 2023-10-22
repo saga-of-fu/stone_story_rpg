@@ -1,0 +1,43 @@
+/*
+// stone story rpg automaite write .
+import Fishing
+import Org/main
+*/
+
+import Org/Debug/Timer
+import Org/Debug/Monitor
+
+var you = new Org/Objects/MainCharacterActions
+var enemy = new Org/Objects/Enemy
+
+var field
+?loc=rocky_plateau
+  field = new Org/Locations/RockyPlateau
+:?loc=deadwood_valley
+  field = new Org/Locations/DeadwoodCanyon
+:?loc=caustic_caves
+  field = new Org/Locations/CavesOfFear
+:?loc=fungus_forest
+  field = new Org/Locations/MushroomForest
+:?loc=undead_crypt
+  field = new Org/Locations/HauntedHalls
+:?loc=bronze_mine
+  field = new Org/Locations/BoilingMine
+:?loc=icy_ridge
+  field = new Org/Locations/IceRidge
+:?loc=temple
+  field = new Org/Locations/Temple
+
+?field
+  field.explore(you, enemy)
+
+// if location 
+?loc.begin | loc.loop
+  enemy.init()
+  ?item.potion = empty & res.tar > 20
+    brew tar
+    //brew bronze + tar
+    //stone, wood, tar, bronze
+
+?hp < 9
+  activate potion
