@@ -1,0 +1,22 @@
+//3456789012345678901234567890123456789012345678
+// Condition Factory
+// condition Factory class
+// buffs or debuffs, foe.buffs, foe.debuffs wrapper object
+// deserialize up on.
+
+// contisonsText string  ex.) buffs.string or debuffs.string, foe.buffs.string, foe.debuffs.string
+// targetCondition string  ex.) smite or chill, dot, damage, feeble
+// return Org/Objects/ConditionState can not create by null
+func createConditonBy(contisonsText, targetCondition)
+  var currentState = new Org/Objects/ConditionState
+  ?0 <= string.IndexOf(contisonsText, ",")
+    var arrayDebuffs = string.Split(contisonsText, ",")
+    for i = 0 .. arrayDebuffs.Count() - 1
+      currentState.setState(arrayDebuffs[i])
+      ?currentState.is(targetCondition)
+        return currentState
+  :
+    currentState.setState(contisonsText)
+    ?currentState.is(targetCondition)
+      return currentState
+  return null

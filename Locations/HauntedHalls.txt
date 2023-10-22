@@ -1,0 +1,87 @@
+//3456789012345678901234567890123456789012345678
+// HauntedHalls class
+// loc=undead_crypt
+// Haunted Halls
+// weak vigor
+
+func explore(you, enemy)
+
+  enemy.searchForRIP()
+
+  var bladeActiveEnemyCount = 8
+  ?loc.stars = 11
+    bladeActiveEnemyCount = 10
+  :?loc.stars = 12
+    bladeActiveEnemyCount = 8
+  :?loc.stars = 13
+    bladeActiveEnemyCount = 10
+  :?loc.stars = 14
+    bladeActiveEnemyCount = 13
+  :?loc.stars = 15
+    bladeActiveEnemyCount = 15
+
+  ?you.canWalk(22)
+    you.walk(loc.stars = 3)
+
+  :?you.canActiveBlade(bladeActiveEnemyCount ,22)
+    equip Blade of the Fallen God
+    activate R
+
+  :?enemy.isFoundRIP()
+    // best dps physical ranged weapon.
+    equip repeating crossbow
+  :?foe = boss & loc = boss
+    ?you.canActiveMask(1 ,20)
+      equip mask
+      activate R
+    :?foe = phase1
+      ?1 < foe.count & foe.state = 32 & 67 <  foe.time
+        equipL vigor sword dL
+        equipR ether shield au
+      ?foe.distance > 6
+        you.rushToTheEnemy()
+      :?enemy.isChillable()
+        equipL vigor sword dL
+        equipR ice sword dI
+      :?enemy.isBurnable()
+        equipL vigor sword dL
+        equipR fire wand dF
+      :?enemy.isPoisonable()
+        equipL vigor sword dL
+        equipR poison wand dP
+      :
+        equipL vigor sword dL
+        equipR ice sword dI
+    :?foe = phase2
+      ?1 < foe.count
+        ?you.hasSmite()
+          ?maxhp = hp
+            you.switchingAttackOneHanded("wand", "poison wand dP", "fire wand dF")
+          :
+            you.switchingAttackOneHanded("wand", "poison wand dP", "vigor wand dL")
+        :
+          you.switchingAttackOneHanded("vigor wand", "vigor wand D", "vigor wand dL")
+      :?foe.distance > 6
+        you.rushToTheEnemy()
+      :?enemy.isChillable()
+        equipL vigor sword dL
+        equipR ice sword dI
+      :?enemy.isBurnable()
+        equipL vigor sword dL
+        equipR fire sword dF
+      :?enemy.isPoisonable()
+        equipL vigor sword dL
+        equipR poison wand dP
+      :
+        equipL vigor sword dL
+        equipR ice sword dI
+    :
+      you.switchingAttackOneHanded("vigor wand", "vigor wand D", "vigor wand dL")
+  :
+    ?buffs.string = smite
+      ?maxhp = hp
+        you.switchingAttackOneHanded("wand", "poison wand dP", "fire wand dF")
+      :
+        you.switchingAttackOneHanded("wand", "fire wand dF", "vigor wand dL")
+    :
+      you.switchingAttackOneHanded("vigor wand", "vigor wand D", "vigor wand dL")

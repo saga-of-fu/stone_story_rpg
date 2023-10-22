@@ -1,0 +1,205 @@
+//3456789012345678901234567890123456789012345678
+// MainCharacterActions
+// main character actions class
+
+var isVisible = true// true or false
+
+?key=upBegin
+  isVisible = true
+?key=downBegin
+  isVisible = false
+
+// true or false
+var switch = 0
+
+
+// error handling function.
+// My error show display and Pause.
+// message string
+func pauseException(message)
+  >`0,23,#ff0000,@message@
+  loc.Pause()
+
+// limitDistance int
+// return boolean
+func canWalk(limitDistance)
+  ?foe.count = 0 |
+  ^foe.distance > limitDistance
+    return true
+  return false
+
+// harvested boolean
+func walk(harvested)
+  ?isVisible
+    >`0,20,func#walk()#@harvested@
+
+  ?harvested & harvest.distance < 7
+    ?harvest=Boulder
+      equip Shovel
+    :?harvest=tree
+      equipR hatchet
+      ?harvest.distance < 5 &
+      ^item.GetCooldown("hatchet") <= 0
+        activate R
+      ?maxhp = hp
+        equipL Star Stone
+      :
+        equipL Ouroboros Stone
+    :
+      equipL Ouroboros Stone
+  :?item.GetCooldown("quarterstaff") <= 0
+    equip quarterstaff
+    ?item.CanActivate("quarterstaff")
+      activate R
+  :
+    ?maxhp > hp
+      ?pickup.distance > 10
+        equipL Ouroboros Stone
+        equipR Triskelion Stone
+      :
+        equipL Star Stone
+        equipR Ouroboros Stone
+    :
+      equipL Star Stone
+      equipR Triskelion Stone
+
+// foeCount int
+// foeDistance int
+// return boolean
+func canActiveBlade(foeCount, foeDistance)
+  ?item.GetCooldown("blade") <= 0 &
+  ^foe.count >= foeCount &
+  ^foe.distance <= foeDistance
+    return true
+  return false
+
+// foeCount int
+// foeDistance int
+// return boolean
+func canActiveMask(foeCount, foeDistance)
+  ?item.GetCooldown("mask") <= 0 &
+  ^foe.count >= foeCount &
+  ^foe.distance <= foeDistance
+    return true
+  return false
+
+//func rushToTheEnemy()
+func rushToTheEnemy()
+  ?isVisible
+    >`0,20,func#rushToTheEnemy()
+  ?item.GetCooldown("bash") <= 0
+    equipL Sword dL
+    equipR Bashing Shield
+  :?item.GetCooldown("dash") <= 0
+    equipL Sword dL
+    equipR Dash Shield
+  :?foe.distance <= 16 &
+  ^item.GetCooldown("quarterstaff") <= 0 |
+  ^item.GetCooldown("quarterstaff") >= 194
+    equip Quarterstaff
+    activate R
+  :
+    equipR Compound Shield
+    ?maxhp > hp
+      equipL Ouroboros Stone
+    :
+      equipL Triskelion Stone
+
+func attakNearbyToArmor()
+  ?isVisible
+    >`0,20,func#attakNearbyToArmor()
+  ?item.right = Heavy hammer & item.right.state = 3
+    equip bardiche
+    ?item.GetCooldown("bardiche") <= 0
+      activate R
+  ?item.left = ice hammer & item.left.state = 3
+    equip Heavy Hammer
+    ?item.GetCooldown("hammer") <= 0
+      activate R
+    ?isVisible
+      >`0,21,attakNearbyToArmor()2
+  :?item.right ! Heavy Hammer
+  ^& item.right ! bardiche
+    equip Heavy hammer
+    ?item.GetCooldown("hammer") <= 0
+      activate R
+  :
+    ?isVisible
+      >`0,21,attakNearbyToArmor()4
+
+func attakNearby()
+  ?isVisible
+    >`0,20,func#attakNearby()
+
+  var weapon1 = "bardiche"
+  var weapon2 = "vigor sword"
+
+  ?switch = 0 &
+  ^item.right.state = 3
+    equipL vigor sword dL
+    equipR compound shield
+    ?isVisible
+      >`0,21,attakNearby()1#@switch@
+  :?switch = 1 &
+  ^item.left.state = 3
+    equip bardiche
+
+  :?item.right ! weapon1
+  ^& item.left ! weapon1
+  ^& item.right ! weapon2
+  ^& item.left ! weapon2
+    switch = 1
+    equip @weapon1@
+    ?isVisible
+      >`0,21,attakNearby()3 this is only for the first time
+  :
+    ?isVisible
+      >`0,21,attakNearby()4 @switch@ waiting time.
+
+  ?item.GetCooldown(weapon1) <= 0
+  ^& item.right = weapon1
+    activate R
+
+// this requires the same two weapons.
+// quickly switch between left and right weapons on the attack.
+// weaponNm string same two weapon name. ex."poison wand"
+// weapon1 string unique one handed weapons. ex."poison wand D"
+// weapon2 string unique one handed weapons. ex."poison wand dP"
+func switchingAttackOneHanded(weaponNm, weapon1, weapon2)
+  ?isVisible
+    >`0,20,runeAttackOneHanded()#@weaponNm@#@weapon1@#@weapon2@#@switch@
+
+  ?switch = 0 & item.right.state = 3
+    switch = 1
+    equipL @weapon1@
+    equipR @weapon2@
+    ?isVisible
+      >`0,21,switchingAttackOneHanded()1#
+  :?switch = 1 & item.left.state = 3
+    switch = 0
+    equipL @weapon2@
+    equipR @weapon1@
+    ?isVisible
+      >`0,21,switchingAttackOneHanded()2#
+  :?item.right ! weaponNm & item.left ! weaponNm
+    switch = 0
+    equipL @weapon2@
+    equipR @weapon1@
+    ?isVisible
+      >`0,21,switchingAttackOneHanded()3@switch@ this is only for the first time
+  :
+    ?isVisible
+      >`0,21,switchingAttackOneHanded()4#@switch@ waiting time.
+
+func hasSmite()
+  ?buffs.string = smite
+    return true
+  return false
+
+func hasChill()
+  ?debuffs.string = chill
+    return true
+  return false
+
+
+

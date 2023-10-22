@@ -1,0 +1,45 @@
+//3456789012345678901234567890123456789012345678
+// loc=fungus_forest
+// Mushroom Forest
+// weak poison
+// explore
+
+
+
+func explore(you, enemy)
+
+  ?you.canWalk(22)
+    you.walk(false)
+
+  :?you.canActiveBlade(10, 22)
+    equip Blade of the Fallen God
+    activate R
+
+  :?foe = boss
+    ?foe ! phase2
+      ?foe.state=32 & foe.time > 62
+        ?item.GetCooldown("mind") <= 0
+          equip Mind Stone
+        :
+          equipL vigor sword dL
+          equipR Compound Shield
+      :?foe.distance > 6
+        you.rushToTheEnemy()
+      :?foe.armor > 0
+        you.attakNearbyToArmor()
+      :
+        you.attakNearby()
+    ?foe = phase2
+      ?foe.armor > 0
+        you.attakNearbyToArmor()
+      :
+        you.attakNearby()
+  :?foe.distance > 20 & foe.distance < 23 &
+  ^foe.count < 2
+    equip repeating crossbow
+  :?foe.distance > 7
+    you.switchingAttackOneHanded("wand", "fire wand dF", "poison wand dP")
+  :?foe.armor > 0
+    you.attakNearbyToArmor()
+  :
+    you.attakNearby()
