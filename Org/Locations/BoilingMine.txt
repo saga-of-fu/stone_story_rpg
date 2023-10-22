@@ -1,0 +1,40 @@
+//3456789012345678901234567890123456789012345678
+// loc=bronze_mine
+// Boiling Mine
+// weak ether
+
+
+func explore(you)
+
+  ?loc ! boss & you.canWalk(22)
+    you.walk(false)
+
+  :?loc ! boss & you.canActiveBlade(10, 22)
+    equip Blade of the Fallen God
+    activate R
+
+  :?loc = boss
+    ?20 <= foe.distance
+      ?foe.state = 2
+        equip repeating crossbow
+      :?foe.state = 32 & foe.time >= 28
+        ?item.GetCooldown("mind") >= 0
+          equipL mind
+        :
+          equipR compound shield
+      :
+        you.switchingAttackOneHanded("ether wand"
+        ^, "ether wand D", "ether wand dL")
+    :
+      equip repeating crossbow
+  :?21 <= foe.distance& foe.distance <= 22
+    equip repeating crossbow
+  :?7 <= foe.distance & foe.distance <= 20
+    equip repeating crossbow
+  :?foe.distance > 6
+    you.rushToTheEnemy()
+  :?foe.armor > 0
+    you.attakNearbyToArmor()
+  :
+    you.attakNearby()
+

@@ -1,0 +1,32 @@
+
+
+var isFound
+var beforeFoeCount
+
+func init()
+  isFound = false
+  beforeFoeCount = 0
+
+// loc=undead_crypt stars 11 over only
+// boss R.I.P.
+func searchForRIP()
+
+/*
+  >`0,10,isFound:@isFound@
+  >`0,11,beforeFoeCount:@beforeFoeCount@
+*/
+
+  ?loc ! boss & foe = boss
+    isFound = true
+    beforeFoeCount = foe.count
+  ?isFound & beforeFoeCount <= foe.count
+    // R.I.P. is alived.
+    beforeFoeCount = foe.count
+  :?isFound & beforeFoeCount > foe.count
+    // R.I.P. is dead.
+    isFound = false
+    beforeFoeCount = 0
+
+// return is FoundRIP R.I.P.
+func isFoundRIP()
+  return isFound

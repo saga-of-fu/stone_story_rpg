@@ -1,0 +1,45 @@
+var isVisible = true// true or false
+
+?key=upBegin
+  isVisible = true
+?key=downBegin
+  isVisible = false
+
+?isVisible
+
+  >`0,6,buffs###:@buffs.string@
+  >`0,7,debuffs#:@debuffs.string@
+  >`0,8,distance:@foe.distance@
+  >`0,9,count###:@foe.count@
+
+  >`0,23,left#=@string.format("{0,2}",item.left.state)@
+  ^:@string.format("{0,3}",item.left.time)@#@item.left@
+  >`0,24,right=@string.format("{0,2}",item.right.state)@
+  ^:@string.format("{0,3}",item.right.time)@#@item.right@
+
+  //colldown counter
+  >`0,25,qs=@string.format("{0,3}",
+  ^item.GetCooldown("quarterstaff"))@
+  ^bash=@string.format("{0,3}",
+  ^item.GetCooldown("bash"))@
+  ^dash=@string.format("{0,3}",
+  ^item.GetCooldown("dash"))@
+  ^hmmr=@string.format("{0,3}",
+  ^item.GetCooldown("hammer"))@
+  ^blad=@string.format("{0,4}",
+  ^item.GetCooldown("blade"))@
+  ^brdh=@string.format("{0,3}",
+  ^item.GetCooldown("bardiche"))@
+  ^mind=@string.format("{0,3}",
+  ^item.GetCooldown("mind"))@
+  ^mask=@string.format("{0,3}",
+  ^item.GetCooldown("mask"))@
+  ^ft=@string.format("{0,3}",
+  ^item.GetCooldown("fire_talisman"))@
+
+
+//  >f0,-4,LV###:@foe.level@
+//  >f0,-3,name#:@foe.name@
+  >f0,-2,buf##:@foe.buffs.string@
+  >f0,-1,debuf:@foe.debuffs.string@
+  >f0, 0,state:@foe.state@,@foe.time@

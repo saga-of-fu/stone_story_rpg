@@ -1,0 +1,12 @@
+var isVisible = true// true or false
+
+?key=leftBegin
+  isVisible = true
+?key=rightBegin
+  isVisible = false
+
+?isVisible
+  >`25,1,current:@time.FormatDigital(totaltime,true)@
+  >`25,2,average:@time.FormatDigital(loc.averageTime)@
+  >`25,3,best###:@time.FormatDigital(loc.bestTime)@
+
